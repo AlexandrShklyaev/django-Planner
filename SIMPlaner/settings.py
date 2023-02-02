@@ -31,10 +31,12 @@ DEBUG = env('DEBUG')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = os.environ.get("SECRET_KEY", "")
-SECRET_KEY = env('SECRET_KEY')
+# SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = "django-insecure-u*)oonj1ncd@t=y@r6d(j$5%f#_5@=+ps=#vdu=pcz9o9kr=$@"
 # SECURITY WARNING: don't run with debug turned on in production!
 
-ALLOWED_HOSTS = ["*"]
+# ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["127.0.0.1", "0.0.0.0"]
 
 
 # Application definition
@@ -94,11 +96,11 @@ WSGI_APPLICATION = 'SIMPlaner.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('BD_NAME'),
-        'USER': env('BD_USER'),
-        'PASSWORD': env('BD_PASSWORD'),
-        'HOST': env('BD_HOST'),
-        'PORT': env('BD_PORT'),
+        'NAME': env('POSTGRES_BD'),
+        'USER': env('POSTGRES_USER'),
+        'PASSWORD': env('POSTGRES_PASSWORD'),
+        'HOST': env('POSTGRES_HOST'),
+        'PORT': env('POSTGRES_PORT'),
     }
 }
 
