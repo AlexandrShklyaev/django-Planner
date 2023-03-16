@@ -42,6 +42,7 @@ ALLOWED_HOSTS = ["127.0.0.1", "0.0.0.0"]
 # Application definition
 
 INSTALLED_APPS = [
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -52,6 +53,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'social_django',
     'core',
+    'goals',
 
 ]
 
@@ -72,7 +74,7 @@ ROOT_URLCONF = 'SIMPlaner.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "templates"), ],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -107,6 +109,17 @@ DATABASES = {
         'PORT': env('POSTGRES_PORT'),
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': env('L_BD_NAME'),
+#         'USER': env('L_BD_USER'),
+#         'PASSWORD': env('L_BD_PASSWORD'),
+#         'HOST': env('L_BD_HOST'),
+#         'PORT': env('L_BD_PORT'),
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -149,7 +162,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / '../static'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
