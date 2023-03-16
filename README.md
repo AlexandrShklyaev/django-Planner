@@ -10,6 +10,8 @@
 - psycopg2-binary==2.9.5
 - sqlparse==0.4.3
 - tzdata==2022.7
+- social-auth-app-django==5.0.0
+- djangorestframework==3.14.0
 
 ### admin panel: ###
 - /admin

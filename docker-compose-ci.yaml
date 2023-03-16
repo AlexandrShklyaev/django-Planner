@@ -46,7 +46,7 @@ services:
 
   front:
     container_name: 'frontend'
-    image: sermalenk/skypro-front:lesson-34
+    image: sermalenk/skypro-front:lesson-35
     ports:
       - 80:80
     depends_on:
