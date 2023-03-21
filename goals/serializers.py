@@ -1,16 +1,8 @@
 from rest_framework import serializers
-
+from rest_framework.exceptions import ValidationError, PermissionDenied
 from core.models import User
-from goals.models import GoalCategory
+from goals.models import GoalCategory, Goal, GoalComment, Status
 
-
-class GoalCreateSerializer(serializers.ModelSerializer):
-    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
-
-    class Meta:
-        model = GoalCategory
-        read_only_fields = ("id", "created", "updated", "user")
-        fields = "__all__"
 
 class UserSerializer(serializers.Serializer):
     id = serializers.IntegerField()
@@ -20,6 +12,15 @@ class UserSerializer(serializers.Serializer):
     email = serializers.EmailField()
 
 
+class GoalCategoryCreateSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
+    class Meta:
+        model = GoalCategory
+        read_only_fields = ("id", "created", "updated", "user")
+        fields = "__all__"
+
+
 class GoalCategorySerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
 
@@ -27,3 +28,52 @@ class GoalCategorySerializer(serializers.ModelSerializer):
         model = GoalCategory
         fields = "__all__"
         read_only_fields = ("id", "created", "updated", "user")
+
+
+class GoalCreateSerializer(serializers.ModelSerializer):
+    category = serializers.PrimaryKeyRelatedField(queryset=GoalCategory.objects.filter(is_deleted=False))
+
+    class Meta:
+        model = Goal
+        read_only_fields = ("id", "created", "updated", "category")
+        fields = "__all__"
+
+    def validate_category(self, value):
+        if value.is_deleted:
+            raise serializers.ValidationError("not allowed in deleted category")
+
+        if value.user != self.context["request"].user:
+            raise serializers.ValidationError("not owner of category")
+
+        return value
+
+
+class GoalSerializer(serializers.ModelSerializer):
+    # category = CategorySerializer(read_only=True)
+    class Meta:
+        model = Goal
+        fields = '__all__'
+        read_only_fields = ('id', 'created', 'updated', 'category')
+
+
+class GoalCommentCreateSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
+    def validate_goal(self, value):
+        if value.status == Status.archived:
+            raise ValidationError('Goal not found')
+        return value
+
+    class Meta:
+        model = GoalComment
+        fields = '__all__'
+        read_only_fields = ('id', 'created', 'updated', 'user')
+
+
+class GoalCommentSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+
+    class Meta:
+        model = GoalComment
+        fields = '__all__'
+        read_only_fields = ('id', 'created', 'updated', 'user', 'goal')
