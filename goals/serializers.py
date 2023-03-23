@@ -50,10 +50,11 @@ class GoalCreateSerializer(serializers.ModelSerializer):
 
 class GoalSerializer(serializers.ModelSerializer):
     # category = CategorySerializer(read_only=True)
+    user = UserSerializer(read_only=True)
     class Meta:
         model = Goal
         fields = '__all__'
-        read_only_fields = ('id', 'created', 'updated', 'category')
+        read_only_fields = ('id', 'created', 'updated', 'category','user')
 
 
 class GoalCommentCreateSerializer(serializers.ModelSerializer):

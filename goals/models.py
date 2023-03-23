@@ -43,11 +43,11 @@ class GoalCategory(DatesModelMixin):
         verbose_name = "Категория"
         verbose_name_plural = "Категории"
 
-
 class Goal(DatesModelMixin):
     title = models.CharField(verbose_name='Название', max_length=255)
     description = models.TextField(verbose_name='Описание', **NULLABLE)
     category = models.ForeignKey(to=GoalCategory, verbose_name='Категория', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, verbose_name="Автор", on_delete=models.PROTECT)
     status = models.PositiveSmallIntegerField(verbose_name='Статус',
                                               choices=Status.choices, default=Status.to_do)
     priority = models.PositiveSmallIntegerField(verbose_name='Приоритет',
